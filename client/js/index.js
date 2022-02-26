@@ -741,8 +741,6 @@ function createBotBtn(rowNum) {
             clearIt.value = '';
 
         });
-
-
     }
 
     var resetBtn = divRow.appendChild(document.createElement('button'));
@@ -751,9 +749,9 @@ function createBotBtn(rowNum) {
     resetBtn.innerHTML = "Reset Round";
     resetBtn.style.visibility = "hidden";
     if (nickname === "TCR") {
-        botBtn.style.visibility = "visible";
+        resetBtn.style.visibility = "visible";
 
-        botBtn.addEventListener('click', function () {
+        resetBtn.addEventListener('click', function () {
             roundNum = 1;
             sock.emit('nextround', roundNum);
             
