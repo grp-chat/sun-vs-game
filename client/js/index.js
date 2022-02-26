@@ -745,6 +745,23 @@ function createBotBtn(rowNum) {
 
     }
 
+    var resetBtn = divRow.appendChild(document.createElement('button'));
+    resetBtn.setAttribute("id", userId + "resetbtn");
+    resetBtn.className = "btn btn-secondary btn-lg";
+    resetBtn.innerHTML = "Reset Round";
+    resetBtn.style.visibility = "hidden";
+    if (nickname === "TCR") {
+        botBtn.style.visibility = "visible";
+
+        botBtn.addEventListener('click', function () {
+            roundNum = 1;
+            sock.emit('nextround', roundNum);
+            
+        });
+
+
+    }
+
     return mainDiv;
 }
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
