@@ -792,8 +792,8 @@ function updateAllWins(userId, winDif) {
     for (var i = counter + 1; i < winDif + counter + 1; i++) {
         var displayWin = document.getElementById(userId + "border");
         var img = document.createElement('img');
-        img.src = "https://cdn4.iconfinder.com/data/icons/trophy-and-awards-1/64/Icon_Star_Trophy_Awards_Gold-1024.png";
-        img.style = "width:30px;height:30px"
+        img.src = "https://cdn2.iconfinder.com/data/icons/kick-off/450/Throphy-256.png";
+        img.style = "width:35px;height:35px"
         img.style.position = "relative"
         img.style.top = "17px"
         img.style.left = "10px"
