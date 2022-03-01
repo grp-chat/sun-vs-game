@@ -792,7 +792,7 @@ function updateAllWins(userId, winDif) {
     for (var i = counter + 1; i < winDif + counter + 1; i++) {
         var displayWin = document.getElementById(userId + "border");
         var img = document.createElement('img');
-        img.src = "https://cdn2.iconfinder.com/data/icons/kick-off/450/Throphy-256.png";
+        img.src = "https://cdn0.iconfinder.com/data/icons/startup-and-new-business-3/24/trophy-1024.png";
         img.style = "width:35px;height:35px"
         img.style.position = "relative"
         img.style.top = "17px"
