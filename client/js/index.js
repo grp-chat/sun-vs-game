@@ -21,7 +21,7 @@ var userId4 = "CJH";
 var userId5 = "CED";
 var userId6 = "KX";
 var userId7 = "KN";
-var userId8 = "TJY";
+var userId8 = "JW";
 
 var nickname = '';
 var connectedUser = '';
@@ -52,8 +52,8 @@ var KXWins = 0;
 var KXChas = 1;
 var KNWins = 0;
 var KNChas = 1;
-var TJYWins = 0;
-var TJYChas = 1;
+var JWWins = 0;
+var JWChas = 1;
 
 //---------------------------------------- USER PIN NUMBER PROMPT -----------------------------------------
 const promptMsg = () => {
@@ -132,17 +132,19 @@ rowNum++; */
 
 document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId3));
 rowNum++;
+document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId8));
+rowNum++;
+document.body.appendChild(createHrLine(wordRow + rowNum));
+rowNum++;
 document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId4));
 rowNum++;
-document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId8));
+document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId5));
 rowNum++;
 document.body.appendChild(createHrLine(wordRow + rowNum));
 rowNum++;
 document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId6));
 rowNum++;
 document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId7));
-rowNum++;
-document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId5));
 rowNum++;
 document.body.appendChild(createHrLine(wordRow + rowNum));
 rowNum++;
@@ -195,11 +197,11 @@ sock.on('updateallwins', data => {
         updateAllWins(userId, KNWinDif);
         KNWins = data.KNWins;
     }
-    if (data.TJYWins > TJYWins) {
-        var TJYWinDif = data.TJYWins - TJYWins;
-        var userId = "TJY"
-        updateAllWins(userId, TJYWinDif);
-        TJYWins = data.TJYWins;
+    if (data.JWWins > JWWins) {
+        var JWWinDif = data.JWWins - JWWins;
+        var userId = "JW"
+        updateAllWins(userId, JWWinDif);
+        JWWins = data.JWWins;
     }
 
     //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
@@ -238,10 +240,10 @@ sock.on('updateallwins', data => {
         removeWin(userId, KNWins);
         KNWins = data.KNWins;
     }
-    if (data.TJYWins < TJYWins) {
-        var userId = "TJY"
-        removeWin(userId, TJYWins);
-        TJYWins = data.TJYWins;
+    if (data.JWWins < JWWins) {
+        var userId = "JW"
+        removeWin(userId, JWWins);
+        JWWins = data.JWWins;
     }
 
 });
@@ -289,11 +291,11 @@ sock.on('updateallchas', data => {
         updateAllChas(userId, KNChaDif);
         KNChas = data.KNChas;
     }
-    if (data.TJYChas > TJYChas) {
-        var TJYChaDif = data.TJYChas - TJYChas;
-        var userId = "TJY"
-        updateAllChas(userId, TJYChaDif);
-        TJYChas = data.TJYChas;
+    if (data.JWChas > JWChas) {
+        var JWChaDif = data.JWChas - JWChas;
+        var userId = "JW"
+        updateAllChas(userId, JWChaDif);
+        JWChas = data.JWChas;
     }
 
     //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
@@ -333,10 +335,10 @@ sock.on('updateallchas', data => {
         removeCha(userId, KNChas);
         KNChas = data.KNChas;
     }
-    if (data.TJYChas < TJYChas) {
-        var userId = "TJY"
-        removeCha(userId, TJYChas);
-        TJYChas = data.TJYChas;
+    if (data.JWChas < JWChas) {
+        var userId = "JW"
+        removeCha(userId, JWChas);
+        JWChas = data.JWChas;
     }
 
 });
@@ -376,8 +378,8 @@ sock.on('transmituser', data => {
         togSpan.style.background = "green";
 
     };
-    if (userOnline === "TJY") {
-        var togSpan = document.getElementById('TJYspan');
+    if (userOnline === "JW") {
+        var togSpan = document.getElementById('JWspan');
         togSpan.style.background = "green";
 
     };
@@ -414,8 +416,8 @@ sock.on('userdisconnect', data => {
         var togSpan = document.getElementById('KNspan');
         togSpan.style.background = "red";
     };
-    if (userOffline === "TJY") {
-        var togSpan = document.getElementById('TJYspan');
+    if (userOffline === "JW") {
+        var togSpan = document.getElementById('JWspan');
         togSpan.style.background = "red";
     };
 });
@@ -449,9 +451,9 @@ sock.on('updateallresults', data => {
         var updatebox = document.getElementById('KNinput');
         updatebox.value = data.KNRes;
     }
-    if (data.userId === "TJY") {
-        var updatebox = document.getElementById('TJYinput');
-        updatebox.value = data.TJYRes;
+    if (data.userId === "JW") {
+        var updatebox = document.getElementById('JWinput');
+        updatebox.value = data.JWRes;
     }
 });
 
@@ -478,7 +480,7 @@ sock.on('refreshall', data => {
     clearIt.value = '';
     clearIt = document.getElementById("KNinput");
     clearIt.value = '';
-    clearIt = document.getElementById("TJYinput");
+    clearIt = document.getElementById("JWinput");
     clearIt.value = '';
 
 });
@@ -737,7 +739,7 @@ function createBotBtn(rowNum) {
             clearIt.value = '';
             clearIt = document.getElementById("KNinput");
             clearIt.value = '';
-            clearIt = document.getElementById("TJYinput");
+            clearIt = document.getElementById("JWinput");
             clearIt.value = '';
 
         });
@@ -785,8 +787,8 @@ function updateAllWins(userId, winDif) {
     if (userId === "KN") {
         counter = KNWins;
     }
-    if (userId === "TJY") {
-        counter = TJYWins;
+    if (userId === "JW") {
+        counter = JWWins;
     }
 
     for (var i = counter + 1; i < winDif + counter + 1; i++) {
@@ -826,8 +828,8 @@ function updateAllChas(userId, chaDif) {
     if (userId === "KN") {
         counter = KNChas;
     }
-    if (userId === "TJY") {
-        counter = TJYChas;
+    if (userId === "JW") {
+        counter = JWChas;
     }
 
     for (var i = counter + 1; i < chaDif + counter + 1; i++) {

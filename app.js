@@ -79,10 +79,10 @@ var KNWins = 0;
 var KNChas = 1;
 var KNRes = 0;
 
-var TJYIn = false;
-var TJYWins = 0;
-var TJYChas = 1;
-var TJYRes = 0;
+var JWIn = false;
+var JWWins = 0;
+var JWChas = 1;
+var JWRes = 0;
 
 
 //------------------------------------------------------------------------------------------------------
@@ -119,12 +119,12 @@ io.on('connection', (sock) => {
             KNIn = true;
             sock.id = "KN";
         }
-        if (data === "TJY") {
-            TJYIn = true;
-            sock.id = "TJY";
+        if (data === "JW") {
+            JWIn = true;
+            sock.id = "JW";
         }
         
-        io.emit('updateallwins', { aumWins, ninaWins, LOKWins, CJHWins, CEDWins, KXWins, KNWins, TJYWins });
+        io.emit('updateallwins', { aumWins, ninaWins, LOKWins, CJHWins, CEDWins, KXWins, KNWins, JWWins });
 
     });
 
@@ -150,8 +150,8 @@ io.on('connection', (sock) => {
         if (sock.id === "KN") {
             KNIn = false;
         }
-        if (sock.id === "TJY") {
-            TJYIn = false;
+        if (sock.id === "JW") {
+            JWIn = false;
         }
 
     });
@@ -181,8 +181,8 @@ io.on('connection', (sock) => {
         if (data === "KN") {
             KNWins++;
         }
-        if (data === "TJY") {
-            TJYWins++;
+        if (data === "JW") {
+            JWWins++;
         }
     });
     sock.on('minusWin', (data) => {
@@ -207,8 +207,8 @@ io.on('connection', (sock) => {
         if (data === "KN") {
             KNWins--;
         }
-        if (data === "TJY") {
-            TJYWins--;
+        if (data === "JW") {
+            JWWins--;
         }
 
     });
@@ -238,8 +238,8 @@ io.on('connection', (sock) => {
         if (data === "KN") {
             KNChas++;
         }
-        if (data === "TJY") {
-            TJYChas++;
+        if (data === "JW") {
+            JWChas++;
         }
     });
 
@@ -265,8 +265,8 @@ io.on('connection', (sock) => {
         if (data === "KN") {
             KNChas--;
         }
-        if (data === "TJY") {
-            TJYChas--;
+        if (data === "JW") {
+            JWChas--;
         }
     });
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~LISTEN FROM CLIENT - ADD & MINUS CHALLENGES ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -306,10 +306,10 @@ io.on('connection', (sock) => {
             var userId = data.userId;
             io.emit('updateallresults', {userId , KNRes});
         }
-        if (data.userId === "TJY") {
-            TJYRes = data.result;
+        if (data.userId === "JW") {
+            JWRes = data.result;
             var userId = data.userId;
-            io.emit('updateallresults', {userId , TJYRes});
+            io.emit('updateallresults', {userId , JWRes});
         }
     });
 
@@ -349,8 +349,8 @@ setInterval(function () {
     if (KNIn === true) {
         io.emit("transmituser", "KN");
     }
-    if (TJYIn === true) {
-        io.emit("transmituser", "TJY");
+    if (JWIn === true) {
+        io.emit("transmituser", "JW");
     }
     //dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 
@@ -378,15 +378,15 @@ setInterval(function () {
     if (KNIn === false) {
         io.emit("userdisconnect", "KN");
     }
-    if (TJYIn === false) {
-        io.emit("userdisconnect", "TJY");
+    if (JWIn === false) {
+        io.emit("userdisconnect", "JW");
     }
 
 
     //io.emit('updateallwins', { aumWins, ninaWins, LKWins, LXRWins, JHAWins, SZFWins, JLWins });
-    io.emit('updateallwins', { aumWins, ninaWins, LOKWins, CJHWins, CEDWins, KXWins, KNWins, TJYWins });
+    io.emit('updateallwins', { aumWins, ninaWins, LOKWins, CJHWins, CEDWins, KXWins, KNWins, JWWins });
     //io.emit('updateallchas', { aumChas, ninaChas, LKChas, LXRChas, JHAChas, SZFChas, JLChas });
-    io.emit('updateallchas', { aumChas, ninaChas, LOKChas, CJHChas, CEDChas, KXChas, KNChas, TJYChas });
+    io.emit('updateallchas', { aumChas, ninaChas, LOKChas, CJHChas, CEDChas, KXChas, KNChas, JWChas });
     
 
     /* io.emit('updateAA', aumWins);
