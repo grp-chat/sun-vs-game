@@ -1,6 +1,7 @@
 
 const sock = io();
 //let newLine = createNewLine();
+var rotation = 1;
 var roundNum = 1;
 var wordRow = "row";
 var rowNum = 1;
@@ -22,6 +23,9 @@ var userId5 = "CED";
 var userId6 = "KX";
 var userId7 = "KN";
 var userId8 = "JW";
+
+var team1 = ["LOK", "CED", "KX"];
+var team2 = ["JW", "CJH", "KN"];
 
 var nickname = '';
 var connectedUser = '';
@@ -118,7 +122,7 @@ sock.emit('newuser', nickname);
 //++++++++++++++++++++++++++++++++++++++++ DOCUMENT OBJECT METHOD UPDATE +++++++++++++++++++++++++++++++++++
 
 var theRound = document.getElementById("h1");
-theRound.innerHTML = "VS Mode - Round" + roundNum;
+theRound.innerHTML = "Infinity War - Round" + roundNum;
 document.body.appendChild(createContainerFluid());
 
 let mainDiv = document.getElementById("maindiv");
@@ -464,12 +468,27 @@ sock.on('sendchallenge', data => {
 });
 
 sock.on('refreshall', data => {
+    changeBackground(rotation);
+    rotation++;
+
+    if (rotation >= 13) {rotation = 1};
+    lifeGiven = 0;
+
     roundNum = data;
-    theRound.innerHTML = "VS Mode - Round" + roundNum;
+    theRound.innerHTML = "Infinity War - Round" + roundNum;
     var refreshIt = document.getElementById(nickname + "submitbtn");
     refreshIt.disabled = false;
     var refreshIt2 = document.getElementById(nickname + "callcha");
     refreshIt2.disabled = false;
+    var refreshIt3 = document.getElementById(nickname + "givebtn");
+    if (nickname != "TCR") {
+        refreshIt3.disabled = false;
+    }
+    var refreshIt4 = document.getElementById(nickname + "reqbtn");
+    if (nickname != "TCR") {
+        refreshIt4.disabled = false;
+    }
+
     var clearIt = document.getElementById("LOKinput");
     clearIt.value = '';
     clearIt = document.getElementById("CJHinput");
@@ -483,6 +502,20 @@ sock.on('refreshall', data => {
     clearIt = document.getElementById("JWinput");
     clearIt.value = '';
 
+
+
+});
+
+sock.on('lifegained', data => {
+    if (nickname === data.receiverId) {
+        alert("You have gained 1 life from " + data.giverId);
+    }
+});
+
+sock.on('sendrequest', data => {
+    if (nickname === data.requestToId) {
+        alert(data.requesterId +  " is requesting 1 life from you");
+    }
 });
 //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} LISTENERS FROM SERVER {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 
@@ -509,6 +542,7 @@ function createNewRow(rowNum, userName, userId) {
     var label1 = divCol1.appendChild(document.createElement('h2'));
     label1.innerHTML = userId;
     label1.style.width = "100px";
+    label1.style.color = "mediumblue";
     //label1.style = "background:rgba(255, 255, 0, 0.3)"
     var span1 = label1.appendChild(document.createElement('span'));
     span1.setAttribute("id", userId + "span");
@@ -575,6 +609,138 @@ function createNewRow(rowNum, userName, userId) {
     divCol3.className = "col3"
     divCol3.style.padding = "10px";
     divCol3.appendChild(createButtonGroup("btnGrp1", userId + "border", userId));
+
+    var divCol4a = divRow.appendChild(document.createElement('div'));
+    divCol4a.setAttribute("id", userId + "listdiv");
+    divCol4a.className = "col4a";
+    if (team1.includes(userId)) {
+        createDropList(userId, divCol4a, team1);
+    }
+    if (team2.includes(userId)) {
+        createDropList(userId, divCol4a, team2);
+    }
+
+    var divCol4b = divRow.appendChild(document.createElement('button'));
+    divCol4b.className = "btn btn-success";
+    divCol4b.setAttribute("id", userId + "givebtn");
+    divCol4b.innerHTML = "Give"
+    if (userId != nickname) {
+        divCol4b.disabled = true;
+    }
+
+    divCol4b.addEventListener('click', function () {
+        //GIVE  
+
+        if (userId === "LOK" && LOKWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "LOK" && LOKWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (userId === "JW" && JWWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "JW" && JWWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (userId === "CJH" && CJHWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "CJH" && CJHWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (userId === "CED" && CEDWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "CED" && CEDWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (userId === "KX" && KXWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "KX" && KXWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (userId === "KN" && KNWins <= 1) {
+            alert("You do not have enough life to give");
+            divCol4b.disabled = true;
+        };
+        if (userId === "KN" && KNWins >= 2) {
+            var selection = document.getElementById(userId + "droplist");
+            var giveToId = selection.options[selection.selectedIndex].text;
+            if (confirm("ARE YOU SURE YOU WANT TO GIVE LIFE TO " + giveToId + "?") === true) {
+                alert(userId + " has given 1 life to " + giveToId)
+                sock.emit('give', { giveToId, userId });
+                lifeGiven++;
+            } else { alert("You cancelled")}
+
+        }
+
+        if (lifeGiven >= 2) {
+            divCol4b.disabled = true;
+        }
+
+    });
+
+    var divCol4c = divRow.appendChild(document.createElement('button'));
+    divCol4c.className = "btn btn-danger";
+    divCol4c.setAttribute("id", userId + "reqbtn");
+    divCol4c.innerHTML = "Request"
+    if (userId != nickname) {
+        divCol4c.disabled = true;
+    }
+    divCol4c.addEventListener('click', function () {
+        var selection = document.getElementById(userId + "droplist");
+        var requestToId = selection.options[selection.selectedIndex].text;
+        sock.emit('requestlife', { nickname, requestToId });
+        divCol4c.disabled = true;
+        alert("You have sent a request to " + requestToId + " to give you 1 life");
+    });
 
     var divCol4 = divRow.appendChild(document.createElement('div'));
     divCol4.setAttribute("id", userId + "chadiv");
@@ -794,7 +960,8 @@ function updateAllWins(userId, winDif) {
     for (var i = counter + 1; i < winDif + counter + 1; i++) {
         var displayWin = document.getElementById(userId + "border");
         var img = document.createElement('img');
-        img.src = "https://cdn0.iconfinder.com/data/icons/startup-and-new-business-3/24/trophy-1024.png";
+        img.src = "https://cdn3.iconfinder.com/data/icons/phuzion/PNG/Misc/fav-heart.png"
+        //img.src = "https://cdn0.iconfinder.com/data/icons/startup-and-new-business-3/24/trophy-1024.png";
         img.style = "width:35px;height:35px"
         img.style.position = "relative"
         img.style.top = "17px"
@@ -843,31 +1010,76 @@ function updateAllChas(userId, chaDif) {
 
 }
 
+function createDropList(userId, elToApply, teamNum) {
+    var select = document.createElement("select");
+    select.name = teamNum;
+    //select.id = teamNum;
+    select.setAttribute("id", userId + "droplist");
+    select.className = "form-control";
+    select.style.width = "80px";
+
+    if (userId != nickname) {
+        select.disabled = true;
+    }
+
+    teamNum = teamNum.filter(function (passId) {
+        return passId !== userId;
+    });
+    for (const val of teamNum) {
+        var option = document.createElement("option");
+        option.value = val;
+        option.text = val.charAt(0).toUpperCase() + val.slice(1);
+        select.appendChild(option);
+    }
+
+    var listLabel = document.createElement("label");
+    listLabel.innerHTML = ""
+    listLabel.htmlFor = teamNum;
+
+    elToApply.appendChild(listLabel).appendChild(select);
+}
+
+function changeBackground(rotation) {
+    if (rotation === 2) {
+        var url = 'https://cdnb.artstation.com/p/assets/images/images/014/324/815/large/chris-kesler-1.jpg?1543495968';
+        document.body.style.backgroundImage = "url(" + url + ")";
+        document.body.style.backgroundSize = "1750px";
+    }
+
+    if (rotation === 4) {
+        url = 'https://www.awn.com/sites/default/files/styles/original/public/image/attached/1046374-anf3740compv0081020cc-lr.jpg?itok=Pf44ptMv';
+        document.body.style.backgroundImage = "url(" + url + ")";
+        document.body.style.backgroundSize = "1500px";
+    }
+
+    if (rotation === 6) {
+        url = 'https://www.teahub.io/photos/full/94-945045_marvel-comic-space-backgrounds.jpg';
+        document.body.style.backgroundImage = "url(" + url + ")";
+        
+    }
+
+    if (rotation === 8) {
+        url = 'https://m.media-amazon.com/images/M/MV5BOTg0ODU3ODY2NF5BMl5BanBnXkFtZTgwMTg4MjkzNTM@._V1_.jpg';
+        document.body.style.backgroundImage = "url(" + url + ")";
+    }
+
+    if (rotation === 10) {
+        url = 'https://lumiere-a.akamaihd.net/v1/images/g_avengers_infinitywar_05_54868e20.jpeg?region=0%2C0%2C1200%2C560';
+        document.body.style.backgroundImage = "url(" + url + ")";
+    }
+
+    if (rotation === 12) {
+        url = 'https://hips.hearstapps.com/digitalspyuk.cdnds.net/16/02/1452510174-movies-thanos-infinity-gauntlet-marvel-cinematic-universe.jpg';
+        document.body.style.backgroundImage = "url(" + url + ")";
+        document.body.style.backgroundSize = "1700px";
+    }
+
+    
+
+    
+    
+    
+ }
+
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-/* function displayWin(elToApply, userId, winCount) {
-    //winCount++;
-    var displayWin = document.getElementById(elToApply);
-    var img = document.createElement('img');
-    img.src = "https://cdn1.iconfinder.com/data/icons/food-4-9/128/Vigor_Fire-Hot-Flame-Burn-256.png";
-    img.style = "width:30px;height:30px"
-    img.style.position = "relative"
-    img.style.top = "17px"
-    img.style.left = "10px"
-    img.setAttribute("id", userId + "win" + winCount);
-
-
-    //img.style.padding = "10px"
-    displayWin.appendChild(img);
-    alert(userId + "win" + winCount);
-
-} */
-
-/* function createNewLine() {
-    var createDiv = document.createElement('div');
-    createDiv.setAttribute("id", "blankdiv");
-    createDiv.style.clear = "left";
-    var createLine = createDiv.appendChild(document.createElement('hr'));
-    createLine.setAttribute("width", "500px");
-    return createDiv;
-} */

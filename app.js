@@ -185,6 +185,74 @@ io.on('connection', (sock) => {
             JWWins++;
         }
     });
+    sock.on('give', (data) => {
+        
+        if (data.userId === "LOK") {
+            LOKWins--;
+            if (data.giveToId === "CED") {
+                CEDWins++
+            }
+            if (data.giveToId === "KX") {
+                KXWins++
+            }
+        }
+        if (data.userId === "JW") {
+            JWWins--;
+            if (data.giveToId === "CJH") {
+                CJHWins++
+            }
+            if (data.giveToId === "KN") {
+                KNWins++
+            }
+        }
+        if (data.userId === "CJH") {
+            CJHWins--;
+            if (data.giveToId === "JW") {
+                JWWins++
+            }
+            if (data.giveToId === "KN") {
+                KNWins++
+            }
+        }
+        if (data.userId === "CED") {
+        CEDWins--;
+            if (data.giveToId === "LOK") {
+                LOKWins++
+            }
+            if (data.giveToId === "KX") {
+                KXWins++
+            }
+        }
+        if (data.userId === "KX") {
+            KXWins--;
+            if (data.giveToId === "LOK") {
+                LOKWins++
+            }
+            if (data.giveToId === "CED") {
+                CEDWins++
+            }
+        }
+        if (data.userId === "KN") {
+            KNWins--;
+            if (data.giveToId === "JW") {
+                JWWins++
+            }
+            if (data.giveToId === "CJH") {
+                CJHWins++
+            }
+        }
+        var giverId = data.userId
+        var receiverId = data.giveToId
+        io.emit("lifegained", { giverId, receiverId });
+    });
+
+    sock.on('requestlife', (data) => {   
+        var requesterId = data.nickname;
+        var requestToId = data.requestToId;
+        io.emit('sendrequest', { requesterId, requestToId });
+        
+});
+
     sock.on('minusWin', (data) => {
         if (data === "AA") {
             aumWins--;
