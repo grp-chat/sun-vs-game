@@ -392,6 +392,10 @@ io.on('connection', (sock) => {
         io.emit('refreshall', roundNum);
     });
 
+    sock.on('chat-to-server', (data) => {
+        io.emit('chat-to-clients', data);
+    });
+
 });
 
 

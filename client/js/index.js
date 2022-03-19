@@ -150,8 +150,7 @@ document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId6));
 rowNum++;
 document.body.appendChild(createNewRow(wordRow + rowNum, userName2, userId7));
 rowNum++;
-document.body.appendChild(createHrLine(wordRow + rowNum));
-rowNum++;
+
 document.body.appendChild(createBotBtn(wordRow + rowNum));
 
 //++++++++++++++++++++++++++++++++++++++++ DOCUMENT OBJECT METHOD UPDATE +++++++++++++++++++++++++++++++++++
@@ -471,7 +470,7 @@ sock.on('refreshall', data => {
     changeBackground(rotation);
     rotation++;
 
-    if (rotation >= 13) {rotation = 1};
+    if (rotation >= 13) { rotation = 1 };
     lifeGiven = 0;
 
     roundNum = data;
@@ -514,8 +513,13 @@ sock.on('lifegained', data => {
 
 sock.on('sendrequest', data => {
     if (nickname === data.requestToId) {
-        alert(data.requesterId +  " is requesting 1 life from you");
+        alert(data.requesterId + " is requesting 1 life from you");
     }
+});
+
+sock.on('chat-to-clients', data => {
+    appendMessage(data.message, data.nickname);
+    
 });
 //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} LISTENERS FROM SERVER {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 
@@ -642,7 +646,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -657,7 +661,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -672,7 +676,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -687,7 +691,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -702,7 +706,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -717,7 +721,7 @@ function createNewRow(rowNum, userName, userId) {
                 alert(userId + " has given 1 life to " + giveToId)
                 sock.emit('give', { giveToId, userId });
                 lifeGiven++;
-            } else { alert("You cancelled")}
+            } else { alert("You cancelled") }
 
         }
 
@@ -868,6 +872,38 @@ function addChallenge(userId, chaCount) {
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function createNewDiv() {
+    var div = document.createElement("div");
+    div.setAttribute("id", "botdiv");
+    div.style.width = "750px";
+    div.style.height = "300px";
+    //div.style = "background:rgba(255, 255, 255, 0.5); color:black; overflow: auto;"
+    div.style.background = "rgba(255, 255, 255, 0.5)";
+    div.style.color = "black";
+    div.style.overflow = "auto";
+    div.style.overflowX = "hidden";
+    //div.style.float = "left";
+    div.style.marginLeft = "2%";
+    //div.innerHTML = "div";
+    return div;
+}
+
+function appendMessage(message, userId) {
+    const messageDiv = document.createElement('div');
+    messageDiv.innerText = message;
+    var chatDiv = document.getElementById('chatdiv')
+    if (userId === "TCR") {messageDiv.style.color = "yellow";}
+    if (userId === "LOK") {messageDiv.style.color = "orange";}
+    if (userId === "JW") {messageDiv.style.color = "lime";}
+    if (userId === "CJH") {messageDiv.style.color = "aqua";}
+    if (userId === "CED") {messageDiv.style.color = "white";}
+    if (userId === "KX") {messageDiv.style.color = "magenta";}
+    if (userId === "KN") {messageDiv.style.color = "lightpink";}
+    
+    chatDiv.append(messageDiv);
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
 
 function createHrLine(rowNum) {
     var divRow = mainDiv.appendChild(document.createElement('div'));
@@ -889,6 +925,7 @@ function createBotBtn(rowNum) {
     botBtn.className = "btn btn-success btn-lg";
     botBtn.innerHTML = "Next Round";
     botBtn.style.visibility = "hidden";
+    botBtn.style.height = "50px";
     if (nickname === "TCR") {
         botBtn.style.visibility = "visible";
 
@@ -916,17 +953,58 @@ function createBotBtn(rowNum) {
     resetBtn.className = "btn btn-secondary btn-lg";
     resetBtn.innerHTML = "Reset Round";
     resetBtn.style.visibility = "hidden";
+    resetBtn.style.height = "50px";
     if (nickname === "TCR") {
         resetBtn.style.visibility = "visible";
 
         resetBtn.addEventListener('click', function () {
             roundNum = 1;
             sock.emit('nextround', roundNum);
-            
+
         });
 
 
     }
+
+    var chatDiv = divRow.appendChild(document.createElement('div'));
+    chatDiv.style.width = '420px';
+    chatDiv.style.height = '125px'
+    chatDiv.style.color = 'black';
+    chatDiv.style.background = 'rgba(255, 255, 255, 0.1)';
+    //chatDiv.style.background = 'white';
+    //chatDiv.style.opacity = '0.3';
+    chatDiv.setAttribute("id", "chatdiv");
+    chatDiv.style.overflow = "auto";
+    chatDiv.style.overflowX = "hidden";
+
+    var chatInput = divRow.appendChild(document.createElement('input'));
+    chatInput.className = "form-control";
+    chatInput.style.width = "350px";
+    chatInput.style.height = "48px";
+    chatInput.setAttribute("id", "chatinput");
+    chatInput.setAttribute("type", "text");
+    //chatInput.style.display = "inline";
+
+    var chatBtn = divRow.appendChild(document.createElement('button'));
+    chatBtn.className = "btn btn-secondary";
+    chatBtn.setAttribute("id", "chatBtn");
+    chatBtn.innerHTML = "Send";
+    chatBtn.style.height = "50px";
+
+    chatBtn.addEventListener('click', function () {
+        var message = nickname + ': ';
+        message += chatInput.value;
+        sock.emit('chat-to-server', { message,nickname });
+        chatInput.value = '';
+    });
+    
+    chatInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("chatBtn").click();
+        }
+    
+    });
 
     return mainDiv;
 }
@@ -1055,7 +1133,7 @@ function changeBackground(rotation) {
     if (rotation === 6) {
         url = 'https://www.teahub.io/photos/full/94-945045_marvel-comic-space-backgrounds.jpg';
         document.body.style.backgroundImage = "url(" + url + ")";
-        
+
     }
 
     if (rotation === 8) {
@@ -1074,12 +1152,12 @@ function changeBackground(rotation) {
         document.body.style.backgroundSize = "1700px";
     }
 
-    
 
-    
-    
-    
- }
+
+
+
+
+}
 
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
