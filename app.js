@@ -187,8 +187,8 @@ io.on('connection', (sock) => {
     });
     sock.on('give', (data) => {
         
-        if (data.userId === "LOK") {
-            LOKWins--;
+        if (data.userId === "JW") {
+            JWWins--;
             if (data.giveToId === "CED") {
                 CEDWins++
             }
@@ -196,8 +196,8 @@ io.on('connection', (sock) => {
                 KXWins++
             }
         }
-        if (data.userId === "JW") {
-            JWWins--;
+        if (data.userId === "LOK") {
+            LOKWins--;
             if (data.giveToId === "CJH") {
                 CJHWins++
             }
@@ -207,8 +207,8 @@ io.on('connection', (sock) => {
         }
         if (data.userId === "CJH") {
             CJHWins--;
-            if (data.giveToId === "JW") {
-                JWWins++
+            if (data.giveToId === "LOK") {
+                LOKWins++
             }
             if (data.giveToId === "KN") {
                 KNWins++
@@ -216,8 +216,8 @@ io.on('connection', (sock) => {
         }
         if (data.userId === "CED") {
         CEDWins--;
-            if (data.giveToId === "LOK") {
-                LOKWins++
+            if (data.giveToId === "JW") {
+                JWWins++
             }
             if (data.giveToId === "KX") {
                 KXWins++
@@ -225,8 +225,8 @@ io.on('connection', (sock) => {
         }
         if (data.userId === "KX") {
             KXWins--;
-            if (data.giveToId === "LOK") {
-                LOKWins++
+            if (data.giveToId === "JW") {
+                JWWins++
             }
             if (data.giveToId === "CED") {
                 CEDWins++
@@ -234,8 +234,8 @@ io.on('connection', (sock) => {
         }
         if (data.userId === "KN") {
             KNWins--;
-            if (data.giveToId === "JW") {
-                JWWins++
+            if (data.giveToId === "LOK") {
+                LOKWins++
             }
             if (data.giveToId === "CJH") {
                 CJHWins++

@@ -24,8 +24,8 @@ var userId6 = "KX";
 var userId7 = "KN";
 var userId8 = "JW";
 
-var team1 = ["LOK", "CED", "KX"];
-var team2 = ["JW", "CJH", "KN"];
+var team1 = ["JW", "CED", "KX"];
+var team2 = ["LOK", "CJH", "KN"];
 
 var nickname = '';
 var connectedUser = '';
